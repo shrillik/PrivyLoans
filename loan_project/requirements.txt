@@ -1,0 +1,17 @@
+# requirements.txt
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Login
+Flask-WTF
+Flask-Limiter
+cryptography
+ecdsa
+pyotp
+qrcode
+Pillow
+twilio
+python-dotenv
+pandas
+scikit-learn
+joblib

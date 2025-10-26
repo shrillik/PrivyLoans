@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Application Status - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; --background-light: #161b22; --border-color: #30363d;
+            --text-primary: #e6edf3; --text-secondary: #848d97; --accent-green: #2ea043;
+            --accent-green-hover: #3fb950; --accent-red: #f85149; --accent-yellow: #e3b341;
+            --accent-blue: #58a6ff;
+        }
+        body {
+            background-color: var(--background-dark); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; margin: 0; line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 0; border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); text-decoration: none; }
+        .logo img { height: 24px; vertical-align: middle; margin-right: 8px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-wrapper { display: flex; justify-content: center; padding: 4rem 1rem; }
+        .form-container {
+            background-color: var(--background-light); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 3rem; width: 100%; max-width: 600px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        h2 { margin-top: 0; text-align: center; letter-spacing: -0.5px; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        input[type="text"] {
+            width: 100%; background-color: var(--background-dark); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 0.8rem; border-radius: 8px; font-size: 1rem;
+            box-sizing: border-box; margin-bottom: 1.5rem; transition: all 0.2s;
+        }
+        input:focus {
+            outline: none; border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        .btn-submit {
+            width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: 600; color: white;
+            background-color: var(--accent-green); border: none; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-submit:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 160, 67, 0.3);
+        }
+        .result-box {
+            margin-top: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid;
+            text-align: center; animation: fadeIn 0.5s ease-out;
+        }
+        .result-box.valid { background-color: rgba(46, 160, 67, 0.1); border-color: var(--accent-green); color: var(--accent-green-hover); }
+        .result-box.invalid { background-color: rgba(248, 81, 73, 0.1); border-color: var(--accent-red); color: var(--accent-red); }
+        .result-box.not-found { background-color: rgba(227, 179, 65, 0.1); border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .result-box h3 { margin-top: 0; }
+        .footer-link { text-align: center; margin-top: 2rem; }
+        .footer-link a { color: var(--accent-blue); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .footer-link a:hover { color: var(--accent-green-hover); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMiAyQzE3LjUyMjggMiAyMiA2LjQ3NzE1IDIyIDEyQzIyIDE3LjUyMjggMTcuNTIyOCAyMiAxMiAyMkM2LjQ3NzE1IDIyIDIgMTcuNTIyOCAyIDEyQzIgNi40NzcxNSA2LjQ3NzE1IDIgMTIgMlpNMTIgMTBDMTMuMTA0NiAxMCAxNCAxMC44OTU0IDE0IDEyVjE2QzE0IDE3LjEwNDYgMTMuMTA0NiAxOCAxMiAxOEg5QzcuODk1NDMgMTggNyAxNy4xMDQ2IDcgMTZWMTJDNyAxMC44OTU0IDcuODk1NDMgMTAgOSAxMEgxMlpNMTIgOEM5Ljc5MDg2IDggOCA5Ljc5MDg2IDggMTJWMTZDOCAxOC4yMDkxIDkuNzkwODYgMjAgMTIgMjBIMTNDMTQuMTA0NiAyMCAxNSAxOS4xMDQ2IDE1IDE4VjE2QzE2LjEwNDYgMTYgMTcgMTUuMTA0NiAxNyAxNFYxMUMxNyA5LjM0MzE1IDE1LjY1NjkgOCAxNCA4SDEyWiIgZmlsbD0iIzJlYTA0MyIvPgo8L3N2Zz4K" alt="PrivyLoans Logo">
+                PrivyLoans
+            </a>
+        </nav>
+    </div>
+    <main class="form-wrapper">
+        <div class="form-container">
+            <h2>Check Your Application Status</h2>
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <label for="app_id">Enter your Application ID:</label>
+                <input type="text" id="app_id" name="app_id" required>
+                <button type="submit" class="btn-submit">Check Status</button>
+            </form>
+
+            {% if request.method == 'POST' %}
+                {% if application %}
+                    <div class="result-box {% if application.valid %}valid{% else %}invalid{% endif %}">
+                        <h3>Status for {{ application.name }}</h3>
+                        <p>
+                            Cryptographic Verification:
+                            <strong>
+                                {% if application.valid %}
+                                    ✅ Valid (Signature and ZKP Verified)
+                                {% else %}
+                                    ❌ Invalid (Verification Failed)
+                                {% endif %}
+                            </strong>
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="result-box not-found">
+                        <h3>Application Not Found</h3>
+                        <p>Please check your Application ID and try again.</p>
+                    </div>
+                {% endif %}
+                 <div class="footer-link">
+                    <a href="{{ url_for('index') }}">🏠 Back to Home</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

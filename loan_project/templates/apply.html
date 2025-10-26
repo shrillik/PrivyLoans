@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan - PrivyLoans</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; --background-light: #161b22; --border-color: #30363d;
+            --text-primary: #e6edf3; --text-secondary: #848d97; --accent-green: #2ea043;
+            --accent-green-hover: #3fb950; --accent-blue: #58a6ff; --accent-red: #f85149;
+        }
+        body {
+            background-color: var(--background-dark); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; margin: 0; line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        /* Navigation Bar Styles */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); text-decoration: none; display: flex; align-items: center; }
+        .logo svg { height: 24px; width: 24px; vertical-align: middle; margin-right: 8px; fill: var(--accent-green); }
+        nav .nav-buttons a { text-decoration: none; color: var(--text-primary); padding: 0.6rem 1.2rem; border-radius: 8px; margin-left: 0.5rem; font-weight: 500; transition: all 0.2s ease-in-out; }
+        nav .nav-buttons a.btn-primary { background-color: var(--accent-green); color: white; }
+        nav .nav-buttons a.btn-secondary { border: 1px solid var(--border-color); }
+        nav .nav-buttons a.btn-primary:hover { background-color: var(--accent-green-hover); }
+        nav .nav-buttons a.btn-secondary:hover { background-color: var(--background-light); }
+
+        /* Form Styles */
+        .form-wrapper { display: flex; justify-content: center; align-items: center; padding: 4rem 1rem; }
+        .form-container { background-color: var(--background-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 3rem; width: 100%; max-width: 700px; }
+        .form-container h2 { margin-top: 0; font-size: 2rem; text-align: center; letter-spacing: -0.5px; }
+        .form-container p { text-align: center; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .loan-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        input { width: 100%; background-color: var(--background-dark); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.8rem; border-radius: 8px; font-size: 1rem; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s; }
+        input:read-only { background-color: #20252c; cursor: not-allowed; }
+        input:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2); }
+        .btn-submit { width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: 600; color: white; background-color: var(--accent-green); border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease-in-out; }
+        .btn-submit:hover { background-color: var(--accent-green-hover); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(46, 160, 67, 0.3); }
+        .alert { padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; text-align: center; border: 1px solid transparent; }
+        .alert-danger { background-color: rgba(248, 81, 73, 0.1); color: var(--accent-red); border-color: rgba(248, 81, 73, 0.3); }
+
+        /* Animation Modal Styles */
+        .animation-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(13, 17, 23, 0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .animation-container { background-color: var(--background-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 2.5rem 3.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 400px; }
+        .animation-container h3 { margin-top: 0; font-size: 1.8rem; letter-spacing: -0.5px; }
+        .animation-steps { list-style: none; padding: 0; margin-top: 2rem; height: 40px; position: relative; }
+        .step { display: flex; align-items: center; justify-content: center; opacity: 0; position: absolute; width: 100%; left: 0; }
+        .step-icon { width: 32px; height: 32px; border-radius: 50%; background-color: var(--background-dark); display: flex; justify-content: center; align-items: center; margin-right: 1.5rem; flex-shrink: 0; border: 1px solid var(--border-color); }
+        .step-icon svg { width: 18px; height: 18px; fill: var(--accent-green); }
+        .step-text { font-size: 1.1rem; font-weight: 500; color: var(--text-primary); }
+        .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--accent-blue); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="{{ url_for('index') }}" class="logo">
+                <svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 10C13.1046 10 14 10.8954 14 12V16C14 17.1046 13.1046 18 12 18H9C7.89543 18 7 17.1046 7 16V12C7 10.8954 7.89543 10 9 10H12ZM12 8C9.79086 8 8 9.79086 8 12V16C8 18.2091 9.79086 20 12 20H13C14.1046 20 15 19.1046 15 18V16C16.1046 16 17 15.1046 17 14V11C17 9.34315 15.6569 8 14 8H12Z"/></svg>
+                PrivyLoans
+            </a>
+            {% if current_user.is_authenticated %}
+            <div class="nav-buttons">
+                <a href="{{ url_for('dashboard') }}" class="btn-secondary">My Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn-primary">Logout</a>
+            </div>
+            {% endif %}
+        </nav>
+    </div>
+    
+    <main class="form-wrapper">
+        <div class="form-container">
+            <h2>Loan Application Form</h2>
+            <p>Your application will be protected with cryptography.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div id="form-error-container" style="display: none;"></div>
+            <form id="loan-form" method="POST" action="{{ url_for('apply') }}" class="loan-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="form-group full-width">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="jane@example.com" required></div>
+                    <div class="form-group"><label for="phone">Verified Phone</label><input type="tel" id="phone" name="phone" value="{{ verified_phone }}" readonly></div>
+                    <div class="form-group"><label for="pan">PAN Number</label><input type="text" id="pan" name="pan" placeholder="ABCDE1234F" required></div>
+                    <div class="form-group"><label for="age">Age</label><input type="number" id="age" name="age" placeholder="25" required></div>
+                    <div class="form-group"><label for="purpose">Purpose of Loan</label><input type="text" id="purpose" name="purpose" placeholder="e.g., Education, Home" required></div>
+                    <div class="form-group"><label for="term">Term (in months)</label><input type="number" id="term" name="term" placeholder="12" required></div>
+                    <div class="form-group"><label for="income">Annual Income (₹)</label><input type="number" id="income" name="income" placeholder="500000" required></div>
+                    <div class="form-group"><label for="amount">Loan Amount (₹)</label><input type="number" id="amount" name="amount" placeholder="100000" required></div>
+                </div>
+                <button type="submit" class="btn-submit">Submit Application</button>
+            </form>
+        </div>
+    </main>
+
+    <div class="animation-modal" id="animation-modal">
+        <div class="animation-container">
+            <h3>Securing Application</h3>
+            <div class="loading-spinner"></div>
+            <ul class="animation-steps">
+                <li class="step" id="step-encrypt"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M18 10V6c0-2.21-1.79-4-4-4s-4 1.79-4 4v4H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V12c0-1.1-.9-2-2-2zm-4 0V6c0-1.1.9-2 2-2s2 .9 2 2v4h-4z"/></svg></div><span class="step-text">Encrypting Data...</span></li>
+                <li class="step" id="step-commit"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2h-4v2h4V4zm6 16H4V8h16v12zM9 13H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></div><span class="step-text">Creating Commitment...</span></li>
+                <li class="step" id="step-zkp"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div><span class="step-text">Generating ZK-Proof...</span></li>
+                <li class="step" id="step-sign"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div><span class="step-text">Applying Signature...</span></li>
+                <li class="step" id="step-submit"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="step-text">Submission Complete!</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loan-form');
+        const modal = document.getElementById('animation-modal');
+        const errorContainer = document.getElementById('form-error-container');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            errorContainer.style.display = 'none';
+            modal.style.display = 'flex';
+
+            const tl = anime.timeline({ easing: 'easeOutQuint', autoplay: true });
+            function animateStep(targetId) {
+                tl.add({ targets: targetId, opacity: [0, 1], translateY: [10, 0], duration: 400 })
+                  .add({ targets: targetId, opacity: 0, translateY: -10, duration: 400, delay: 800 });
+            }
+            animateStep('#step-encrypt');
+            animateStep('#step-commit');
+            animateStep('#step-zkp');
+            animateStep('#step-sign');
+            tl.add({ targets: '#step-submit', opacity: [0, 1], translateY: [10, 0], duration: 400 });
+            
+            tl.finished.then(() => {
+                const formData = new FormData(form);
+                fetch(form.action, { method: 'POST', body: formData })
+                .then(response => {
+                    if (!response.ok) { return response.json().then(err => Promise.reject(err)); }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) { window.location.href = data.redirect_url; } 
+                    else {
+                        errorContainer.innerHTML = `<div class="alert alert-danger">${data.message || 'An unknown error occurred.'}</div>`;
+                        errorContainer.style.display = 'block';
+                        modal.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    const message = error.message || 'A network error occurred. Please try again.';
+                    errorContainer.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+                    errorContainer.style.display = 'block';
+                    modal.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

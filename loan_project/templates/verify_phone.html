@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Phone - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; --background-light: #161b22; --border-color: #30363d;
+            --text-primary: #e6edf3; --text-secondary: #848d97; --accent-green: #2ea043;
+            --accent-green-hover: #3fb950; --accent-red: #f85149; --accent-blue: #58a6ff;
+            --accent-yellow: #e3b341;
+        }
+        body {
+            background-color: var(--background-dark); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; display: flex; align-items: center;
+            justify-content: center; min-height: 100vh; margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-container {
+            background-color: var(--background-light); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 3rem; width: 100%; max-width: 420px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        h2 { text-align: center; margin-top: 0; letter-spacing: -0.5px; }
+        p { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; max-width: 300px; margin-left:auto; margin-right:auto; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        input[type="tel"] {
+            width: 100%; background-color: var(--background-dark); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 0.8rem; border-radius: 8px; font-size: 1rem;
+            box-sizing: border-box; transition: all 0.2s;
+        }
+        input:focus {
+            outline: none; border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        .btn-submit {
+            width: 100%; padding: 0.8rem; font-size: 1.1rem; font-weight: 600; color: white;
+            background-color: var(--accent-green); border: none; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-submit:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-2px);
+        }
+        .alert { padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; text-align: center; border: 1px solid transparent; }
+        .alert-danger { background-color: rgba(248, 81, 73, 0.1); color: var(--accent-red); border-color: rgba(248, 81, 73, 0.3); }
+        .alert-info { background-color: rgba(227, 179, 65, 0.1); color: var(--accent-yellow); border-color: rgba(227, 179, 65, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Verify Your Phone Number</h2>
+        <p>Enter your 10-digit mobile number linked with Aadhaar to begin.</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('verify_phone') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required placeholder="9876543210" maxlength="10">
+    </div>
+    <button type="submit" class="btn-submit">Send OTP</button>
+</form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #9face6);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Container */
+.container {
+    text-align: center;
+    padding: 50px;
+}
+
+/* Header */
+header h1 {
+    font-size: 2.5rem;
+    color: #222;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    gap: 40px;
+}
+
+.hero img {
+    width: 250px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+/* Form Page */
+.form-container {
+    background: white;
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.loan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.loan-form label {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.loan-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Success Page */
+.success-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.success-container img {
+    width: 120px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; 
+            --background-light: #161b22; 
+            --border-color: #30363d;
+            --text-primary: #e6edf3; 
+            --text-secondary: #848d97; 
+            --accent-green: #2ea043;
+            --accent-red: #f85149; 
+            --accent-blue: #58a6ff; 
+            --row-hover-bg: rgba(88, 166, 255, 0.05);
+            --row-invalid-bg: rgba(248, 81, 73, 0.05);
+        }
+        body {
+            background-color: var(--background-dark); 
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            max-width: 1400px; 
+            margin: 2rem auto; 
+            padding: 2rem; 
+            background-color: var(--background-light);
+            border: 1px solid var(--border-color); 
+            border-radius: 12px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 2rem; 
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        h2 { 
+            margin: 0; 
+            font-size: 1.8rem; 
+            letter-spacing: -0.5px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            text-align: left; 
+        }
+        th, td { 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 14px 15px; 
+            vertical-align: middle;
+        }
+        th { 
+            font-size: 0.8rem; 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        tr { 
+            transition: background-color 0.2s ease-in-out; 
+        }
+        tr:hover { 
+            background-color: var(--row-hover-bg); 
+        }
+        .invalid-row { 
+            background-color: var(--row-invalid-bg); 
+        }
+        .status-valid { 
+            color: var(--accent-green); 
+            font-weight: 500; 
+        }
+        .status-invalid { 
+            color: var(--accent-red); 
+            font-weight: 500; 
+        }
+        .status-approved { 
+            color: var(--accent-green); 
+            font-weight: 500; 
+        }
+        .status-rejected { 
+            color: var(--accent-red); 
+            font-weight: 500; 
+        }
+        .btn {
+            padding: 0.6rem 1rem; 
+            color: var(--text-primary); 
+            background-color: transparent;
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            text-decoration: none; 
+            transition: all 0.2s ease;
+        }
+        .btn:hover { 
+            border-color: var(--accent-blue); 
+            background-color: var(--row-hover-bg); 
+        }
+        .alert { 
+            padding: 1rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 8px; 
+            text-align: center; 
+            border: 1px solid transparent; 
+        }
+        .alert-success { 
+            background-color: rgba(46, 160, 67, 0.1); 
+            color: var(--accent-green); 
+            border-color: rgba(46, 160, 67, 0.3); 
+        }
+         /* ... (add this style for the new button) ... */
+    .btn-tamper {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background-color: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .btn-tamper:hover {
+        border-color: var(--accent-red);
+        color: var(--accent-red);
+        background-color: var(--row-invalid-bg);
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Admin Dashboard</h2>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Crypto Status</th>
+                    <th>ML Prediction</th>
+                    <th>Actions</th> </tr>
+    
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr class="{% if not app.valid %}invalid-row{% endif %}">
+                    <td>{{ app.name }}</td>
+                    <td>₹{{ "{:,.2f}".format(app.amount) }}</td>
+                    <td>
+                        {% if app.valid %}
+                            <span class="status-valid">✔ Valid</span>
+                        {% else %}
+                            <span class="status-invalid">✖ Invalid</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if app.prediction == 'Approved' %}
+                            <span class="status-approved">Approved</span>
+                        {% elif app.prediction == 'Rejected' %}
+                            <span class="status-rejected">Rejected</span>
+                        {% else %}
+                            <span>{{ app.prediction }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-secondary);">No applications submitted yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

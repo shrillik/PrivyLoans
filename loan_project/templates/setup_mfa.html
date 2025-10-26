@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup MFA - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; --background-light: #161b22; --border-color: #30363d;
+            --text-primary: #e6edf3; --text-secondary: #848d97; --accent-green: #2ea043;
+            --accent-green-hover: #3fb950; --accent-blue: #58a6ff;
+        }
+        body {
+            background-color: var(--background-dark); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; display: flex; align-items: center;
+            justify-content: center; min-height: 100vh; margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            background-color: var(--background-light); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 3rem; width: 100%; max-width: 450px;
+            text-align: center; animation: fadeIn 0.6s ease-out;
+        }
+        h2 { margin-top: 0; letter-spacing: -0.5px; }
+        p { color: var(--text-secondary); }
+        img { border: 4px solid var(--border-color); border-radius: 12px; margin: 1.5rem 0; }
+        input[type="text"] {
+            width: 100%; background-color: var(--background-dark); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 0.8rem; border-radius: 8px; font-size: 1.2rem;
+            box-sizing: border-box; margin-bottom: 1.5rem; text-align: center; letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+        input:focus {
+            outline: none; border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        .btn-submit {
+            width: 100%; padding: 0.8rem; font-size: 1.1rem; font-weight: 600; color: white;
+            background-color: var(--accent-green); border: none; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-submit:hover { background-color: var(--accent-green-hover); transform: translateY(-2px); }
+        .footer-link { margin-top: 2rem; }
+        .footer-link a { color: var(--accent-blue); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .footer-link a:hover { color: var(--accent-green-hover); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Setup Multi-Factor Authentication</h2>
+        <p>Scan this QR code with your authenticator app (e.g., Google Authenticator).</p>
+        <img src="data:image/png;base64,{{ qr_code_image }}" alt="MFA QR Code">
+        <p>Then, enter the 6-digit code to complete the setup.</p>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="text" name="mfa_code" required autocomplete="off" placeholder="123456" maxlength="6">
+            <button type="submit" class="btn-submit">Verify and Enable MFA</button>
+        </form>
+        <div class="footer-link">
+            <a href="{{ url_for('admin') }}">Back to Admin</a>
+        </div>
+    </div>
+</body>
+</html>

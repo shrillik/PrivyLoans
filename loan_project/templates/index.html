@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrivyLoans - Secure Loan Applications</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --background-dark: #000000; /* MODIFIED: Changed to pure black */
+            --background-light: #161b22;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #848d97;
+            --accent-green: #2ea043;
+            --accent-green-hover: #3fb950;
+            --accent-blue: #58a6ff;
+        }
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        /* --- Animation --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* --- Navigation Bar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 32px;
+            vertical-align: middle;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover img {
+            transform: rotate(-15deg);
+        }
+        nav .nav-buttons a {
+            text-decoration: none;
+            color: var(--text-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            margin-left: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+        nav .nav-buttons a.btn-primary {
+            background-color: var(--accent-green);
+            color: white;
+            box-shadow: 0 4px 15px -5px rgba(46, 160, 67, 0.4);
+        }
+        nav .nav-buttons a.btn-secondary {
+            border: 1px solid var(--border-color);
+        }
+        nav .nav-buttons a.btn-primary:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px -5px rgba(46, 160, 67, 0.5);
+        }
+        nav .nav-buttons a.btn-secondary:hover {
+            background-color: var(--background-light);
+            border-color: var(--accent-blue);
+        }
+        /* --- Hero Section --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 4rem;
+            padding: 3rem 0;
+        }
+        .hero-text {
+            animation: fadeIn 0.6s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        .hero-text h1 {
+            font-size: 3.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+        .hero-text b { color: var(--accent-green); }
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 90%;
+        }
+        .hero-buttons { display: flex; gap: 1rem; }
+        .hero-buttons .btn {
+            text-decoration: none;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.2s ease-in-out;
+        }
+        .hero-buttons .btn-primary {
+            background-color: var(--accent-green);
+            box-shadow: 0 4px 15px -5px rgba(46, 160, 67, 0.4);
+        }
+        .hero-buttons .btn-primary:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px -5px rgba(46, 160, 67, 0.5);
+        }
+        .hero-buttons .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .hero-buttons .btn-secondary:hover {
+            background-color: var(--background-light);
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+        .hero-features {
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .hero-features span { margin-right: 1.5rem; }
+
+        .hero-graphic {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.6s ease-out 0.4s;
+            animation-fill-mode: both;
+        }
+        .graphic-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* MODIFIED: Removed the background gradient */
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        /* NEW RULE: To make the image fill its container */
+        .graphic-bg img {
+            width: 100%;
+            height: 90%;
+            object-fit: cover; /* This makes the image cover the area without distortion */
+        }
+
+        .graphic-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+        }
+        .sphere-1 {
+            width: 250px; height: 250px;
+            background: var(--accent-blue);
+            top: 10%; left: 5%;
+            animation: float 12s infinite ease-in-out;
+        }
+        .sphere-2 {
+            width: 200px; height: 200px;
+            background: var(--accent-green);
+            bottom: 10%; right: 5%;
+            animation: float 15s infinite ease-in-out alternate;
+        }
+        .graphic-icon {
+            position: relative;
+            z-index: 10;
+            background-color: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3.5rem;
+            border-radius: 50%;
+        }
+        .graphic-icon img {
+            height: 90px;
+            filter: drop-shadow(0 0 15px var(--accent-green));
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 4rem 0;
+            }
+            .hero-graphic { margin-top: 3rem; height: 400px; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .hero-text p { max-width: 100%; }
+            .hero-buttons { justify-content: center; }
+        }
+        @media (max-width: 600px) {
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-buttons { flex-direction: column; }
+            .hero-buttons .btn { width: 100%; box-sizing: border-box; margin-bottom: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+</div>
+    <div class="container">
+        <nav>
+    
+            <a href="/" class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMiAyQzE3LjUyMjggMiAyMiA2LjQ3NzE1IDIyIDEyQzIyIDE3LjUyMjggMTcuNTIyOCAyMiAxMiAyMkM2LjQ3NzE1IDIyIDIgMTcuNTIyOCAyIDEyQzIgNi40NzcxNSA2LjQ3NzE1IDIgMTIgMlpNMTIgMTBDMTMuMTA0NiAxMCAxNCAxMC44OTU0IDE0IDEyVjE2QzE0IDE3LjEwNDYgMTMuMTA0NiAxOCAxMiAxOEg5QzcuODk1NDMgMTggNyAxNy4xMDQ2IDcgMTZWMTJDNyAxMC44OTU0IDcuODk1NDMgMTAgOSAxMEgxMlpNMTIgOEM5Ljc5MDg2IDggOCA5Ljc5MDg2IDggMTJWMTZDOCAxOC4yMDkxIDkuNzkwODYgMjAgMTIgMjBIMTNDMTQuMTA0NiAyMCAxNSAxOS4xMDQ2IDE1IDE4VjE2QzE2LjEwNDYgMTYgMTcgMTUuMTA0NiAxNyAxNFYxMUMxNyA5LjM0MzE1IDE1LjY1NjkgOCAxNCA4SDEyWiIgZmlsbD0iIzJlYTA0MyIvPgo8L3N2Zz4K" alt="PrivyLoans Logo">
+                PrivyLoans
+            </a>
+            <div class="nav-buttons">
+                <a href="{{ url_for('register') }}" class="btn-secondary">Register</a>
+    <a href="{{ url_for('login') }}" class="btn-secondary">User Login</a>
+    <a href="{{ url_for('admin_login') }}" class="btn-primary">Admin Login</a>
+        </nav>
+    </div>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-text">
+                <span style="display: inline-block; background-color: rgba(46, 160, 67, 0.1); color: var(--accent-green-hover); padding: 7px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; margin-bottom: 1.5rem;">
+                     Privacy-Preserving Loan Application
+                </span>
+                <h1>Apply for loans with <b>anonymous</b> identity protection</h1>
+                <p>
+                    Our system uses advanced cryptography—<b>Digital Signatures</b> and
+                    <b>Zero-Knowledge Proofs</b>—to keep your identity safe and prevent tampering.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('verify_phone') }}" class="btn btn-primary">Apply Now</a>
+                    <a href="{{ url_for('status') }}" class="btn btn-secondary">Check Status</a>
+                </div>
+                <div class="hero-features">
+                    <span>⚡️ Fast</span>
+                    <span>🔒 Secure</span>
+                    <span>🕵️ Anonymous</span>
+                </div>
+            </div>
+            <div class="hero-graphic">
+                <div class="graphic-bg">
+                    <img src="https://www.shutterstock.com/image-illustration/neon-green-outline-padlock-on-600w-2028646274.jpg" alt="Secure Abstract Background">
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
