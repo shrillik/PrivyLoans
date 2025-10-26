@@ -1,0 +1,31 @@
+﻿PrivyLoans - Loan Management System
+A web application built with Python and Django for managing loan applications and processes.
+About The Project
+PrivyLoans is a Django-based web project designed to handle the functionalities of a loan management system. This could include features like loan applications, user management (for applicants and administrators), and tracking loan statuses.
+Given the technologies (Python, HTML, CSS), this project serves as a web portal for these services.
+Features
+* User Authentication: Secure login and registration for customers and administrators.
+* Loan Application: A form for users to apply for different types of loans.
+* Admin Dashboard: A backend interface for administrators to review applications, approve or reject loans, and manage users.
+* Loan Status Tracking: A feature for users to check the status of their loan applications.
+* Profile Management: A section for users to update their personal information.
+Technology Stack
+* Backend: Python
+   * Framework: Django (inferred from the loan_project directory structure)
+* Frontend: HTML & CSS
+* Database: (Likely) SQLite (default for Django) or another SQL database.
+Setup and Run
+To get a local copy up and running, follow these steps.
+1. Run the encryption utility:
+python encryption_utils.py
+
+2. Copy the environment configuration:
+Copy the $env…
+
+
+   3. Set up the database and admin account:
+python setup_admin.py
+
+(This will create a DB instance and admin account)
+   4. Run the application:
+python app.py
